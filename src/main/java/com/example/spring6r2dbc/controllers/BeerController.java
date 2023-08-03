@@ -20,23 +20,24 @@ public class BeerController {
     private final BeerService beerService;
 
     @DeleteMapping(BEER_PATH_ID)
-    Mono<ResponseEntity<Void>> deleteById(@PathVariable Integer beerId){
-        return beerService.deleteBeerById(beerId).map(response -> ResponseEntity
-                .noContent().build());
+    Mono<ResponseEntity<Void>> deleteById(@PathVariable Integer beerId) {
+        return beerService.deleteBeerById(beerId)
+                .thenReturn(ResponseEntity
+                        .noContent().build());
     }
 
     @PatchMapping(BEER_PATH_ID)
     Mono<ResponseEntity<Void>> patchExistingBeer(@PathVariable Integer beerId,
-                                                 @Validated @RequestBody BeerDTO beerDTO){
+                                                 @Validated @RequestBody BeerDTO beerDTO) {
         return beerService.patchBeer(beerId, beerDTO)
                 .map(updatedDto -> ResponseEntity.ok().build());
     }
 
     @PutMapping(BEER_PATH_ID)
     Mono<ResponseEntity<Void>> updateExistingBeer(@PathVariable("beerId") Integer beerId,
-                                                  @Validated @RequestBody BeerDTO beerDTO){
+                                                  @Validated @RequestBody BeerDTO beerDTO) {
         return beerService.updateBeer(beerId, beerDTO)
-                .map(savedDto -> ResponseEntity.ok().build());
+                .map(savedDto -> ResponseEntity.noContent().build());
     }
 
     @PostMapping(BEER_PATH)
